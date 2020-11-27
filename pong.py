@@ -28,35 +28,43 @@ def main():
     speedx = 7
     speedy = 5
 
-    rkty = 100   # 球拍数据
-    rkth = 100
-    rkstep = 20
+    rkty = 100  # 球拍数据，球拍默认位置
+    rkth = 100  # 球拍默认宽度
+    rkstep = 5  # 每次移动球拍的距离
+
+    isUppress = False  # 键盘“上” 是否按下
+    isDownpress = False  # 键盘“下” 是否按下
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
 
     while True:
-        screen.fill(CBACK)      # 清空画面为背景色
+        screen.fill(CBACK)  # 清空画面为背景色
         time.sleep(0.01)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return 0
-            if event.type == pygame.KEYDOWN:    # 键盘上下按钮响应
+            if event.type == pygame.KEYDOWN:  # 键盘上下按钮响应
                 pressed_keys = pygame.key.get_pressed()
                 if pressed_keys[K_UP]:
-                    if rkty - rkstep >= 0:       # 球拍的边界处理
-                        rkty = rkty - rkstep
+                    isUppress = True  # 用标志来解决键盘一直按着的情况
                 elif pressed_keys[K_DOWN]:
-                    if rkty + rkth + rkstep <= HEIGHT:
-                        rkty = rkty + rkstep
+                    isDownpress = True
+            elif event.type == pygame.KEYUP:  # 按键释放后将按下标志设置为 假
+                isUppress = isDownpress = False
 
-        pygame.draw.rect(screen, CRKT, (0, rkty, 10, rkth), 0)
-        pygame.draw.circle(screen, CBALL, (x, y), radius, 0)    # 画实心球
-        if(x > WIDTH or x < 0):     # 球的边界处理
-            speedx = - speedx
-        if(y > HEIGHT or y < 0):
+        if (rkty - rkstep >= 0) and isUppress:  # 球拍的边界处理，一直按着也能移动球拍
+            rkty = rkty - rkstep
+        if (rkty + rkth + rkstep <= HEIGHT) and isDownpress:
+            rkty = rkty + rkstep
+
+        pygame.draw.rect(screen, CRKT, (0, rkty, 10, rkth), 0)  # 画填充矩形：球拍
+        pygame.draw.circle(screen, CBALL, (x, y), radius, 0)  # 画实心球
+        if (x > WIDTH or x < 0):  # 球的边界处理
+            speedx = -speedx
+        if (y > HEIGHT or y < 0):
             speedy = -speedy
         x = x + speedx
         y = y + speedy

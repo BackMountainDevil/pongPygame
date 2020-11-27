@@ -4,3 +4,4 @@
 GPL 3.0
 # References
 - [ grantjenks /free-python-games ](https://github.com/grantjenks/free-python-games)
+- [python按键按住不放持续响应代码](https://blog.csdn.net/baidu_39560388/article/details/84612605)
