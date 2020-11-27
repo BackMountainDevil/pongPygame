@@ -22,7 +22,7 @@ CRKT = (200, 0, 0)
 
 
 def main():
-    x = 10  # 球数据
+    x = 80  # 球数据
     y = 10
     radius = 10
     speedx = 7
@@ -30,6 +30,7 @@ def main():
 
     rkty = 100  # 球拍数据，球拍默认位置
     rkth = 100  # 球拍默认宽度
+    rkwh = 10   # 球拍厚度
     rkstep = 5  # 每次移动球拍的距离
 
     isUppress = False  # 键盘“上” 是否按下
@@ -60,11 +61,17 @@ def main():
         if (rkty + rkth + rkstep <= HEIGHT) and isDownpress:
             rkty = rkty + rkstep
 
-        pygame.draw.rect(screen, CRKT, (0, rkty, 10, rkth), 0)  # 画填充矩形：球拍
+        pygame.draw.rect(screen, CRKT, (0, rkty, rkwh, rkth), 0)  # 画填充矩形：球拍
         pygame.draw.circle(screen, CBALL, (x, y), radius, 0)  # 画实心球
-        if (x > WIDTH or x < 0):  # 球的边界处理
+        if x > WIDTH:  # 球的边界处理
             speedx = -speedx
-        if (y > HEIGHT or y < 0):
+        elif x < (rkwh + radius):   # 左边界
+            if (y > rkty) and (y < (rkty + rkth)):  # 球拍范围内
+                speedx = -speedx
+            else:   # 未击中球拍
+                pygame.quit()
+                return 0
+        if (y > HEIGHT or y < 0):   # 上下边界
             speedy = -speedy
         x = x + speedx
         y = y + speedy
