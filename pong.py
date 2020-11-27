@@ -13,6 +13,7 @@ import pygame
 from pygame.locals import K_DOWN, K_UP
 import time
 
+MUSICPATH = "pong/pong.ogg"
 WIDTH = 808
 HEIGHT = 640
 
@@ -36,10 +37,18 @@ def main():
     isUppress = False  # 键盘“上” 是否按下
     isDownpress = False  # 键盘“下” 是否按下
 
+    isload = False  # 音乐是否载入
+
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
 
+    pygame.mixer.init()
+    try:
+        pygame.mixer.music.load(MUSICPATH)
+        isload = True
+    except Exception as m:
+        print("警告信息： ", m, "， 请正确配置音频文件")
     while True:
         screen.fill(CBACK)  # 清空画面为背景色
         time.sleep(0.01)
@@ -68,6 +77,8 @@ def main():
         elif x < (rkwh + radius):   # 左边界
             if (y > rkty) and (y < (rkty + rkth)):  # 球拍范围内
                 speedx = -speedx
+                if isload:  # 避免音频未正确加载导致的程序异常结束
+                    pygame.mixer.music.play()
             else:   # 未击中球拍
                 pygame.quit()
                 return 0
