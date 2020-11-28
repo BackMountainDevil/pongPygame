@@ -13,7 +13,12 @@ import pygame
 from pygame.locals import K_DOWN, K_s, K_UP, K_w, K_SPACE
 import time
 
-MUSICPATH = "pong/pong.ogg"     # 击球声音文件路径
+# MUSICPATH
+MHIT = "pong.ogg"  # 击球声音文件路径
+MBEG = "maliaobegin.ogg"  # 开始音频
+MFAIL = "fail.ogg"  # 游戏失败音频
+MBAK = "tombk.ogg"  # 背景音乐音频
+
 WIDTH = 808
 HEIGHT = 640
 
@@ -46,20 +51,26 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
 
-    pygame.mixer.init()
+    pygame.mixer.init()  # 初始化音频模块并载入音频文件
     try:
-        pygame.mixer.music.load(MUSICPATH)
+        mhit = pygame.mixer.Sound(MHIT)
+        mbegin = pygame.mixer.Sound(MBEG)
+        mfail = pygame.mixer.Sound(MFAIL)
+        pygame.mixer.music.load(MBAK)
         isload = True
     except Exception as m:
-        print("警告信息： ", m, "， 请正确配置音频文件")
+        print("温馨提示： ", m, "， 请正确配置音频文件")
+    if isload:  # 载入失败不会推出，后面不会有音乐罢了
+        pygame.mixer.music.play()
+        mbegin.play()
 
-    # fonts = pygame.font.get_fonts()   # 查看可用字体
-    # for i in fonts:
-    #     print(i)
     while True:
-        screen.fill(CBACK)  # 清空画面为背景色
+        if isload and not pygame.mixer.music.get_busy():  # 循环播放背景音乐
+            pygame.mixer.music.play()
 
+        screen.fill(CBACK)  # 清空画面为背景色
         time.sleep(0.01)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -80,6 +91,8 @@ def main():
                         speedy = 5
                         rkty = 100
                         score = 0
+                        if isload:
+                            mbegin.play()
 
             elif event.type == pygame.KEYUP:  # 按键释放后将按下标志设置为 假
                 isUppress = isDownpress = False
@@ -97,12 +110,12 @@ def main():
                     speedx = -speedx
                     score = score + 1  # 得分
                     if isload:  # 避免音频未正确加载导致的程序异常结束
-                        pygame.mixer.music.play()
+                        mhit.play()
                 else:  # 未击中球拍
                     ispause = True
                     isfail = True
-                    # pygame.quit()
-                    # return 0
+                    if isload:
+                        mfail.play()
             if (y > HEIGHT or y < 0):  # 上下边界
                 speedy = -speedy
             x = x + speedx
