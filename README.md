@@ -3,7 +3,8 @@
 # 使用方法
 两种方法，自己选择其中一种即可
 ## 方法一：下载编译好的程序
-见Releases
+见Releases,或者百度网盘
+- [v0.0.0   提取码：64tb](https://pan.baidu.com/s/1gXiZ7HI2S1RdpVGpFuLWZg)
 
 ## 方法二：自行编译
 ### 准备环境
