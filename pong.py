@@ -13,7 +13,7 @@ import sys
 import time
 
 import pygame
-from pygame.locals import K_DOWN, K_SPACE, K_UP, K_s, K_w
+from pygame.locals import K_SPACE, K_s, K_w
 from ball import ball
 # MUSICPATH
 MHIT = "pong.ogg"  # 击球声音文件路径
@@ -37,9 +37,6 @@ def main():
     rkth = 100  # 球拍默认宽度
     rkwh = 10  # 球拍厚度
     rkstep = 5  # 每次移动球拍的距离
-
-    isUppress = False  # 键盘“上” 是否按下
-    isDownpress = False  # 键盘“下” 是否按下
 
     isload = False  # 音乐是否载入
     isfont = False  # 字体是否存在
@@ -81,29 +78,23 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()  # 关闭pygame模块
                 sys.exit(0)  # 关闭程序
-            if event.type == pygame.KEYDOWN:  # 键盘上下按钮响应
-                pressed_keys = pygame.key.get_pressed()
-                if pressed_keys[K_UP] or pressed_keys[K_w]:
-                    isUppress = True  # 用标志来解决键盘一直按着的情况
-                elif pressed_keys[K_DOWN] or pressed_keys[K_s]:
-                    isDownpress = True
-                elif pressed_keys[K_SPACE]:  # 空格键 暂停
-                    ispause = not ispause
-                    if isfail:
-                        isfail = False  # 重新开始，重置数据
-                        bball.reset()
-                        rkty = 100
-                        score = 0
-                        if isload:
-                            mbegin.play()
-
-            elif event.type == pygame.KEYUP:  # 按键释放后将按下标志设置为 假
-                isUppress = isDownpress = False
+            # 键盘按下响应
+            if event.type == pygame.KEYDOWN and pygame.key.get_pressed(
+            )[K_SPACE]:
+                ispause = not ispause
+                if isfail:
+                    isfail = False  # 重新开始，重置数据
+                    bball.reset()
+                    rkty = 100
+                    score = 0
+                    if isload:
+                        mbegin.play()
 
         if (not ispause) and (not isfail):  # 未暂停且未结束的情况下才处理移动
-            if (rkty - rkstep >= 0) and isUppress:  # 球拍的边界处理，一直按着也能移动球拍
+            if (rkty - rkstep >= 0) and pygame.key.get_pressed()[K_w]:
                 rkty = rkty - rkstep
-            if (rkty + rkth + rkstep <= HEIGHT) and isDownpress:
+            if (rkty + rkth + rkstep <=
+                    HEIGHT) and pygame.key.get_pressed()[K_s]:
                 rkty = rkty + rkstep
 
             if bball.x > WIDTH:  # 球的边界处理
