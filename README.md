@@ -33,3 +33,4 @@ GPL 3.0
 - [PyGame字体](https://blog.csdn.net/Hubz131/article/details/86740969)
 - [Python int与string之间的转化](https://www.cnblogs.com/nzbbody/p/3581048.html)
 - [pyinstaller将python程序打包成windows系统下的可执行文件 - exe文件](https://blog.csdn.net/weixin_43031092/article/details/109162262)
+- [python class Doc](https://docs.python.org/zh-cn/3/tutorial/classes.html)

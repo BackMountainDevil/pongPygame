@@ -11,10 +11,10 @@
 '''
 import sys
 import time
-
 import pygame
 from pygame.locals import K_SPACE, K_s, K_w
 from ball import ball
+from racket import racket
 # MUSICPATH
 MHIT = "pong.ogg"  # 击球声音文件路径
 MBEG = "maliaobegin.ogg"  # 开始音频
@@ -32,11 +32,7 @@ CFONT = (0, 0, 0)
 
 def main():
     bball = ball(WIDTH, HEIGHT)
-
-    rkty = 100  # 球拍数据，球拍默认位置
-    rkth = 100  # 球拍默认宽度
-    rkwh = 10  # 球拍厚度
-    rkstep = 5  # 每次移动球拍的距离
+    rkt = racket()
 
     isload = False  # 音乐是否载入
     isfont = False  # 字体是否存在
@@ -85,22 +81,23 @@ def main():
                 if isfail:
                     isfail = False  # 重新开始，重置数据
                     bball.reset()
-                    rkty = 100
+                    rkt.reset()
                     score = 0
                     if isload:
                         mbegin.play()
 
         if (not ispause) and (not isfail):  # 未暂停且未结束的情况下才处理移动
-            if (rkty - rkstep >= 0) and pygame.key.get_pressed()[K_w]:
-                rkty = rkty - rkstep
-            if (rkty + rkth + rkstep <=
+            if (rkt.rkty - rkt.rkstep >= 0) and pygame.key.get_pressed()[K_w]:
+                rkt.rkty = rkt.rkty - rkt.rkstep
+            if (rkt.rkty + rkt.rkth + rkt.rkstep <=
                     HEIGHT) and pygame.key.get_pressed()[K_s]:
-                rkty = rkty + rkstep
+                rkt.rkty = rkt.rkty + rkt.rkstep
 
             if bball.x > WIDTH:  # 球的边界处理
                 bball.speedx = -bball.speedx
-            elif bball.x < (rkwh + bball.radius):  # 左边界
-                if (bball.y > rkty) and (bball.y < (rkty + rkth)):  # 球拍范围内
+            elif bball.x < (rkt.rkwh + bball.radius):  # 左边界
+                if (bball.y > rkt.rkty) and (bball.y <
+                                             (rkt.rkty + rkt.rkth)):  # 球拍范围内
                     bball.speedx = -bball.speedx
                     score = score + 1  # 得分
                     if isload:  # 避免音频未正确加载导致的程序异常结束
@@ -115,7 +112,8 @@ def main():
             bball.x = bball.x + bball.speedx
             bball.y = bball.y + bball.speedy
 
-        pygame.draw.rect(screen, CRKT, (0, rkty, rkwh, rkth), 0)  # 画填充矩形：球拍
+        pygame.draw.rect(screen, CRKT, (0, rkt.rkty, rkt.rkwh, rkt.rkth),
+                         0)  # 画填充矩形：球拍
         pygame.draw.circle(screen, CBALL, (bball.x, bball.y), bball.radius,
                            0)  # 画实心球
 
