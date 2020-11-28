@@ -9,9 +9,11 @@
 @License :  GPL 3.0
 @Desc    :  基于py3-pygame的乒乓球游戏
 '''
-import pygame
-from pygame.locals import K_DOWN, K_s, K_UP, K_w, K_SPACE
+import sys
 import time
+
+import pygame
+from pygame.locals import K_DOWN, K_SPACE, K_UP, K_s, K_w
 
 # MUSICPATH
 MHIT = "pong.ogg"  # 击球声音文件路径
@@ -44,6 +46,7 @@ def main():
     isDownpress = False  # 键盘“下” 是否按下
 
     isload = False  # 音乐是否载入
+    isfont = False  # 字体是否存在
     ispause = False  # 是否暂停
     isfail = False
     score = 0  # 分数
@@ -64,6 +67,13 @@ def main():
         pygame.mixer.music.play()
         mbegin.play()
 
+        # 找不到calibri字体就会使用pygame默认字体，都不支持中文
+    try:
+        ft = pygame.font.SysFont("calibri", 30)
+        ftg = pygame.font.SysFont("calibri", 99)
+        isfont = True
+    except FileNotFoundError as e:
+        print("温馨提示： ", e, "， 请在电脑上安装对应的字体")
     while True:
         if isload and not pygame.mixer.music.get_busy():  # 循环播放背景音乐
             pygame.mixer.music.play()
@@ -73,8 +83,8 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                return 0
+                pygame.quit()   # 关闭pygame模块
+                sys.exit(0)     # 关闭程序
             if event.type == pygame.KEYDOWN:  # 键盘上下按钮响应
                 pressed_keys = pygame.key.get_pressed()
                 if pressed_keys[K_UP] or pressed_keys[K_w]:
@@ -124,16 +134,14 @@ def main():
         pygame.draw.rect(screen, CRKT, (0, rkty, rkwh, rkth), 0)  # 画填充矩形：球拍
         pygame.draw.circle(screen, CBALL, (x, y), radius, 0)  # 画实心球
 
-        # 找不到calibri字体就会使用pygame默认字体，都不支持中文
-        ft = pygame.font.SysFont("calibri", 30)
-        text = ft.render("Score: " + str(score), True, CFONT)
-        screen.blit(text, (100, 0))
-        if isfail:
-            ftg = pygame.font.SysFont("calibri", 99)
+        if isfail and isfont:
             tover = ftg.render("Game Over", True, CFONT)
             trest = ft.render("Press SPACE to start again", True, CFONT)
             screen.blit(tover, (150, 200))
             screen.blit(trest, (220, 400))
+        elif isfont:
+            text = ft.render("Score: " + str(score), True, CFONT)
+            screen.blit(text, (100, 0))
         pygame.display.update()
 
 
