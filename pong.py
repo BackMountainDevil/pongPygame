@@ -10,7 +10,7 @@
 @Desc    :  基于py3-pygame的乒乓球游戏
 '''
 import pygame
-from pygame.locals import K_DOWN, K_UP, K_SPACE
+from pygame.locals import K_DOWN, K_s, K_UP, K_w, K_SPACE
 import time
 
 MUSICPATH = "pong/pong.ogg"
@@ -59,9 +59,9 @@ def main():
                 return 0
             if event.type == pygame.KEYDOWN:  # 键盘上下按钮响应
                 pressed_keys = pygame.key.get_pressed()
-                if pressed_keys[K_UP]:
+                if pressed_keys[K_UP] or pressed_keys[K_w]:
                     isUppress = True  # 用标志来解决键盘一直按着的情况
-                elif pressed_keys[K_DOWN]:
+                elif pressed_keys[K_DOWN] or pressed_keys[K_s]:
                     isDownpress = True
                 elif pressed_keys[K_SPACE]:     # 空格键 暂停
                     ispause = not ispause
