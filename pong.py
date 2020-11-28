@@ -20,6 +20,7 @@ HEIGHT = 640
 CBACK = (110, 50, 230)
 CBALL = (245, 245, 220)
 CRKT = (200, 0, 0)
+CFONT = (0, 0, 0)
 
 
 def main():
@@ -39,6 +40,7 @@ def main():
 
     isload = False  # 音乐是否载入
     ispause = False     # 是否暂停
+    score = 0   # 分数
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
@@ -49,6 +51,10 @@ def main():
         isload = True
     except Exception as m:
         print("警告信息： ", m, "， 请正确配置音频文件")
+
+    # fonts = pygame.font.get_fonts()   # 查看可用字体
+    # for i in fonts:
+    #     print(i)
     while True:
         screen.fill(CBACK)  # 清空画面为背景色
 
@@ -79,6 +85,7 @@ def main():
             elif x < (rkwh + radius):   # 左边界
                 if (y > rkty) and (y < (rkty + rkth)):  # 球拍范围内
                     speedx = -speedx
+                    score = score + 1   # 得分
                     if isload:  # 避免音频未正确加载导致的程序异常结束
                         pygame.mixer.music.play()
                 else:   # 未击中球拍
@@ -90,6 +97,11 @@ def main():
             y = y + speedy
         pygame.draw.rect(screen, CRKT, (0, rkty, rkwh, rkth), 0)  # 画填充矩形：球拍
         pygame.draw.circle(screen, CBALL, (x, y), radius, 0)  # 画实心球
+
+        # 找不到calibri字体就会使用pygame默认字体，都不支持中文
+        ft = pygame.font.SysFont("calibri", 30)
+        text = ft.render("Score: "+str(score), True, CFONT)
+        screen.blit(text, (100, 0))
         pygame.display.update()
 
 

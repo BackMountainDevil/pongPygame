@@ -20,3 +20,8 @@ GPL 3.0
 - [Pygame：播放声音和音效](https://blog.csdn.net/w15977858408/article/details/104283348)
 - [Do not use bare except, specify exception instead (E722)](https://www.flake8rules.com/rules/E722.html)
 - [python 查看错误类型](https://blog.csdn.net/weixin_44737399/article/details/89092300)
+- [pygame获取系统中的字体](https://blog.csdn.net/weixin_45951701/article/details/107425502)
+- [Pygame添加静态文字详解](https://blog.csdn.net/cool99781/article/details/106752516)
+- [PyGame字体](https://blog.csdn.net/Hubz131/article/details/86740969)
+- [Python int与string之间的转化](https://www.cnblogs.com/nzbbody/p/3581048.html)
+- []()
