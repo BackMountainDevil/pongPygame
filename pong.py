@@ -10,7 +10,7 @@
 @Desc    :  基于py3-pygame的乒乓球游戏
 '''
 import pygame
-from pygame.locals import K_DOWN, K_UP
+from pygame.locals import K_DOWN, K_UP, K_SPACE
 import time
 
 MUSICPATH = "pong/pong.ogg"
@@ -38,7 +38,7 @@ def main():
     isDownpress = False  # 键盘“下” 是否按下
 
     isload = False  # 音乐是否载入
-
+    ispause = False     # 是否暂停
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
@@ -51,6 +51,7 @@ def main():
         print("警告信息： ", m, "， 请正确配置音频文件")
     while True:
         screen.fill(CBACK)  # 清空画面为背景色
+
         time.sleep(0.01)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -62,31 +63,33 @@ def main():
                     isUppress = True  # 用标志来解决键盘一直按着的情况
                 elif pressed_keys[K_DOWN]:
                     isDownpress = True
+                elif pressed_keys[K_SPACE]:     # 空格键 暂停
+                    ispause = not ispause
             elif event.type == pygame.KEYUP:  # 按键释放后将按下标志设置为 假
                 isUppress = isDownpress = False
 
-        if (rkty - rkstep >= 0) and isUppress:  # 球拍的边界处理，一直按着也能移动球拍
-            rkty = rkty - rkstep
-        if (rkty + rkth + rkstep <= HEIGHT) and isDownpress:
-            rkty = rkty + rkstep
+        if not ispause:  # 未暂停的情况下才处理移动
+            if (rkty - rkstep >= 0) and isUppress:  # 球拍的边界处理，一直按着也能移动球拍
+                rkty = rkty - rkstep
+            if (rkty + rkth + rkstep <= HEIGHT) and isDownpress:
+                rkty = rkty + rkstep
 
+            if x > WIDTH:  # 球的边界处理
+                speedx = -speedx
+            elif x < (rkwh + radius):   # 左边界
+                if (y > rkty) and (y < (rkty + rkth)):  # 球拍范围内
+                    speedx = -speedx
+                    if isload:  # 避免音频未正确加载导致的程序异常结束
+                        pygame.mixer.music.play()
+                else:   # 未击中球拍
+                    pygame.quit()
+                    return 0
+            if (y > HEIGHT or y < 0):   # 上下边界
+                speedy = -speedy
+            x = x + speedx
+            y = y + speedy
         pygame.draw.rect(screen, CRKT, (0, rkty, rkwh, rkth), 0)  # 画填充矩形：球拍
         pygame.draw.circle(screen, CBALL, (x, y), radius, 0)  # 画实心球
-        if x > WIDTH:  # 球的边界处理
-            speedx = -speedx
-        elif x < (rkwh + radius):   # 左边界
-            if (y > rkty) and (y < (rkty + rkth)):  # 球拍范围内
-                speedx = -speedx
-                if isload:  # 避免音频未正确加载导致的程序异常结束
-                    pygame.mixer.music.play()
-            else:   # 未击中球拍
-                pygame.quit()
-                return 0
-        if (y > HEIGHT or y < 0):   # 上下边界
-            speedy = -speedy
-        x = x + speedx
-        y = y + speedy
-
         pygame.display.update()
 
 
