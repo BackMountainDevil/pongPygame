@@ -13,13 +13,17 @@
 3. (非必须，可跳过, 只是没声音而已)下载音频文件，自行查找乒乓球击球音效、开场音效、失败音效、背景音效，然后转换为ogg格式或者wvb格式，然后修改代码中的几个音频路径`MUSICPATH`，找不到这里有一份压缩好的[音频素材包（ 提取码: nadg）](https://pan.baidu.com/s/10R6ryFxi_YD-UpVQpiHsiQ)
 ### 开始玩耍
 1. 下载代码
-2. `python3 pong.py`, 开始游戏之后，按键盘上下按键控制球拍上下移动，接住球即可继续游戏，没接住的话游戏结束。结束后按空格可以重新开始游戏
+2. `python3 pong.py`, 开始游戏之后，按键盘W/S按键控制球拍上下移动，接住球即可继续游戏，没接住的话游戏结束。结束后按空格可以重新开始游戏
 # 按键控制
 空格： 暂停/开始  
-上/W： 上  
-下/S： 下
+W： 上  
+S： 下
 # License
 GPL 3.0
+# Log
+从V0.0.0之前，显示图形和图形碰撞检测都是自己调用draw和粗略的进行距离判断，但是如果球多起来，对象的个体数一多起来，对象的种类多起来的时候，这个时候再为为一个类手写不同的碰撞检测方法就会是一个庞大又繁琐的工程，这个时候不得不提pygame里面提供的Sprite和Group了。
+
+Sprite为我们提供了一个装载游戏对象的类，比如这里面的球拍和球，而Group则是Sprite的组合，可以轻松的对Group里面的各个sprite进行碰撞检测、删除、绘制。
 # References
 - [ grantjenks /free-python-games ](https://github.com/grantjenks/free-python-games)
 - [python按键按住不放持续响应代码](https://blog.csdn.net/baidu_39560388/article/details/84612605)
@@ -34,3 +38,9 @@ GPL 3.0
 - [Python int与string之间的转化](https://www.cnblogs.com/nzbbody/p/3581048.html)
 - [pyinstaller将python程序打包成windows系统下的可执行文件 - exe文件](https://blog.csdn.net/weixin_43031092/article/details/109162262)
 - [python class Doc](https://docs.python.org/zh-cn/3/tutorial/classes.html)
+- [pygame.sprite Doc](https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.Sprite)
+- [pygame 的精灵使用](https://www.cnblogs.com/liquancai/p/13256388.html)
+- [（一般误粗翻）Pygame 官方文档 - pygame.sprite](https://blog.csdn.net/Enderman_xiaohei/article/details/88218773)
+- [random](https://www.runoob.com/python/func-number-random.html)
+- [assert](https://www.runoob.com/python3/python3-assert.html)
+- [logging](https://www.jianshu.com/p/feb86c06c4f4)

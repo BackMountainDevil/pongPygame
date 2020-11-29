@@ -31,9 +31,6 @@ CFONT = (0, 0, 0)
 
 
 def main():
-    bball = ball(WIDTH, HEIGHT)
-    rkt = racket()
-
     isload = False  # 音乐是否载入
     isfont = False  # 字体是否存在
     ispause = False  # 是否暂停
@@ -42,6 +39,19 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
+
+    bball = ball(CBALL, 20, 20)
+    bball.rect.x = 490
+    bball.rect.y = 80
+    rkt = racket(CRKT, 10, 100)
+    rkt.rect.x = 0
+    rkt.rect.y = 100
+
+    ball_list = pygame.sprite.Group()   # 存放小球
+    all_list = pygame.sprite.Group()    # 存放全部
+    ball_list.add(bball)
+    all_list.add(bball)
+    all_list.add(rkt)
 
     pygame.mixer.init()  # 初始化音频模块并载入音频文件
     try:
@@ -87,19 +97,19 @@ def main():
                         mbegin.play()
 
         if (not ispause) and (not isfail):  # 未暂停且未结束的情况下才处理移动
-            if (rkt.rkty - rkt.rkstep >= 0) and pygame.key.get_pressed()[K_w]:
-                rkt.rkty = rkt.rkty - rkt.rkstep
-            if (rkt.rkty + rkt.rkth + rkt.rkstep <=
+            if (rkt.rect.y - rkt.rkstep >=
+                    0) and pygame.key.get_pressed()[K_w]:
+                rkt.rect.y = rkt.rect.y - rkt.rkstep
+            if (rkt.rect.y + rkt.rkth + rkt.rkstep <=
                     HEIGHT) and pygame.key.get_pressed()[K_s]:
-                rkt.rkty = rkt.rkty + rkt.rkstep
+                rkt.rect.y = rkt.rect.y + rkt.rkstep
 
-            if bball.x > WIDTH:  # 球的边界处理
+            if bball.rect.x > WIDTH:  # 球的边界处理
                 bball.speedx = -bball.speedx
-            elif bball.x < (rkt.rkwh + bball.radius):  # 左边界
-                if (bball.y > rkt.rkty) and (bball.y <
-                                             (rkt.rkty + rkt.rkth)):  # 球拍范围内
+            elif bball.rect.x < (bball.radius):  # 左边界
+                if pygame.sprite.collide_rect(rkt, bball):  # sprite自带的碰撞检测
+                    score = score + 1
                     bball.speedx = -bball.speedx
-                    score = score + 1  # 得分
                     if isload:  # 避免音频未正确加载导致的程序异常结束
                         mhit.play()
                 else:  # 未击中球拍
@@ -107,15 +117,10 @@ def main():
                     isfail = True
                     if isload:
                         mfail.play()
-            if (bball.y > HEIGHT or bball.y < 0):  # 上下边界
+            if (bball.rect.y > HEIGHT or bball.rect.y < 0):  # 上下边界
                 bball.speedy = -bball.speedy
-            bball.x = bball.x + bball.speedx
-            bball.y = bball.y + bball.speedy
-
-        pygame.draw.rect(screen, CRKT, (0, rkt.rkty, rkt.rkwh, rkt.rkth),
-                         0)  # 画填充矩形：球拍
-        pygame.draw.circle(screen, CBALL, (bball.x, bball.y), bball.radius,
-                           0)  # 画实心球
+            bball.rect.x = bball.rect.x + bball.speedx
+            bball.rect.y = bball.rect.y + bball.speedy
 
         if isfail and isfont:
             tover = ftg.render("Game Over", True, CFONT)
@@ -125,7 +130,8 @@ def main():
         if isfont:
             text = ft.render("Score: " + str(score), True, CFONT)
             screen.blit(text, (100, 0))
-        pygame.display.update()
+        all_list.draw(screen)   # 绘制所有的sprite对象
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
