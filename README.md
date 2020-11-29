@@ -44,3 +44,4 @@ Sprite为我们提供了一个装载游戏对象的类，比如这里面的球�
 - [random](https://www.runoob.com/python/func-number-random.html)
 - [assert](https://www.runoob.com/python3/python3-assert.html)
 - [logging](https://www.jianshu.com/p/feb86c06c4f4)
+- [pygame.update()与pygame.flip()的区别](https://www.cnblogs.com/hiuhungwan/p/11180900.html)

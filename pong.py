@@ -10,7 +10,6 @@
 @Desc    :  基于py3-pygame的乒乓球游戏
 '''
 import sys
-import time
 import pygame
 from pygame.locals import K_SPACE, K_s, K_w
 from ball import ball
@@ -39,6 +38,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Pong Pygame program')
+    clock = pygame.time.Clock()
 
     bball = ball(CBALL, 20, 20)
     bball.rect.x = 490
@@ -47,8 +47,8 @@ def main():
     rkt.rect.x = 0
     rkt.rect.y = 100
 
-    ball_list = pygame.sprite.Group()   # 存放小球
-    all_list = pygame.sprite.Group()    # 存放全部
+    ball_list = pygame.sprite.Group()  # 存放小球
+    all_list = pygame.sprite.Group()  # 存放全部
     ball_list.add(bball)
     all_list.add(bball)
     all_list.add(rkt)
@@ -78,7 +78,6 @@ def main():
             pygame.mixer.music.play()
 
         screen.fill(CBACK)  # 清空画面为背景色
-        time.sleep(0.01)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -130,8 +129,9 @@ def main():
         if isfont:
             text = ft.render("Score: " + str(score), True, CFONT)
             screen.blit(text, (100, 0))
-        all_list.draw(screen)   # 绘制所有的sprite对象
-        pygame.display.flip()
+        all_list.draw(screen)  # 绘制所有的sprite对象
+        clock.tick(30)  # 以每秒30帧的速率进行绘制
+        pygame.display.update()
 
 
 if __name__ == '__main__':
