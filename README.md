@@ -39,6 +39,7 @@ Sprite为我们提供了一个装载游戏对象的类，比如这里面的球�
 - [pyinstaller将python程序打包成windows系统下的可执行文件 - exe文件](https://blog.csdn.net/weixin_43031092/article/details/109162262)
 - [python class Doc](https://docs.python.org/zh-cn/3/tutorial/classes.html)
 - [pygame.sprite Doc](https://www.pygame.org/docs/ref/sprite.html#pygame.sprite.Sprite)
+- [05a-Exercises-pygame-sprites](https://github.com/ILS-Z399/05a-Exercises-pygame-sprites)
 - [pygame 的精灵使用](https://www.cnblogs.com/liquancai/p/13256388.html)
 - [（一般误粗翻）Pygame 官方文档 - pygame.sprite](https://blog.csdn.net/Enderman_xiaohei/article/details/88218773)
 - [random](https://www.runoob.com/python/func-number-random.html)

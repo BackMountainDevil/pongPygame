@@ -40,7 +40,7 @@ def main():
     pygame.display.set_caption('Pong Pygame program')
     clock = pygame.time.Clock()
 
-    bball = ball(CBALL, 20, 20)
+    bball = ball(CBALL, 20, 20, (WIDTH, HEIGHT))
     bball.rect.x = 490
     bball.rect.y = 80
     rkt = racket(CRKT, 10, 100)
@@ -103,9 +103,8 @@ def main():
                     HEIGHT) and pygame.key.get_pressed()[K_s]:
                 rkt.rect.y = rkt.rect.y + rkt.rkstep
 
-            if bball.rect.x > WIDTH:  # 球的边界处理
-                bball.speedx = -bball.speedx
-            elif bball.rect.x < (bball.radius):  # 左边界
+            bball.update()
+            if bball.rect.x < (bball.radius):  # 左边界
                 if pygame.sprite.collide_rect(rkt, bball):  # sprite自带的碰撞检测
                     score = score + 1
                     bball.speedx = -bball.speedx
@@ -116,10 +115,6 @@ def main():
                     isfail = True
                     if isload:
                         mfail.play()
-            if (bball.rect.y > HEIGHT or bball.rect.y < 0):  # 上下边界
-                bball.speedy = -bball.speedy
-            bball.rect.x = bball.rect.x + bball.speedx
-            bball.rect.y = bball.rect.y + bball.speedy
 
         if isfail and isfont:
             tover = ftg.render("Game Over", True, CFONT)
