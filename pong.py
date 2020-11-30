@@ -65,7 +65,7 @@ def main():
     except Exception as m:
         print("温馨提示： ", m, "， 请正确配置音频文件")
     if isload:  # 载入失败不会推出，后面不会有音乐罢了
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)     # 循环播放
         mbegin.play()
 
         # 找不到calibri字体就会使用pygame默认字体，都不支持中文
@@ -76,9 +76,6 @@ def main():
     except FileNotFoundError as e:
         print("温馨提示： ", e, "， 请在电脑上安装对应的字体")
     while True:
-        if isload and not pygame.mixer.music.get_busy():  # 循环播放背景音乐
-            pygame.mixer.music.play()
-
         screen.fill(CBACK)  # 清空画面为背景色
 
         for event in pygame.event.get():
