@@ -14,16 +14,16 @@ import pygame
 from pygame.locals import K_SPACE, K_s, K_w
 from ball import ball
 from racket import racket
-# MUSICPATH
-MHIT = "pong.ogg"  # 击球声音文件路径
-MBEG = "maliaobegin.ogg"  # 开始音频
-MFAIL = "fail.ogg"  # 游戏失败音频
-MBAK = "tombk.ogg"  # 背景音乐音频
+
+MHIT = "music/pong.ogg"  # 击球声音文件路径
+MBEG = "music/maliaobegin.ogg"  # 开始音频
+MFAIL = "music/fail.ogg"  # 游戏失败音频
+MBAK = "music/maliaorun.ogg"  # 背景音乐音频
 
 WIDTH = 808
 HEIGHT = 640
 
-CBACK = (110, 50, 230)
+CBACK = (153, 255, 0)
 CBALL = (245, 245, 220)
 CRKT = (200, 0, 0)
 CFONT = (0, 0, 0)
@@ -40,10 +40,10 @@ def main():
     pygame.display.set_caption('Pong Pygame program')
     clock = pygame.time.Clock()
 
-    bball = ball(CBALL, 20, 20, (WIDTH, HEIGHT))
+    bball = ball(CBALL, 20, (WIDTH, HEIGHT), (7, 5), "img/ball.png")
     bball.rect.x = 490
     bball.rect.y = 80
-    rkt = racket(CRKT, 10, 100)
+    rkt = racket(CRKT, (10, 100), "img/pingpongbat.png")
     rkt.rect.x = 0
     rkt.rect.y = 100
 
@@ -57,8 +57,10 @@ def main():
     try:
         mhit = pygame.mixer.Sound(MHIT)
         mbegin = pygame.mixer.Sound(MBEG)
+        mbegin.set_volume(0.2)
         mfail = pygame.mixer.Sound(MFAIL)
         pygame.mixer.music.load(MBAK)
+        pygame.mixer.music.set_volume(0.4)
         isload = True
     except Exception as m:
         print("温馨提示： ", m, "， 请正确配置音频文件")
@@ -83,7 +85,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()  # 关闭pygame模块
                 sys.exit(0)  # 关闭程序
-            # 键盘按下响应
+            # 空格键按下响应，长摁无效
             if event.type == pygame.KEYDOWN and pygame.key.get_pressed(
             )[K_SPACE]:
                 ispause = not ispause
@@ -104,8 +106,9 @@ def main():
                 rkt.rect.y = rkt.rect.y + rkt.rkstep
 
             bball.update()
-            if bball.rect.x < (bball.radius):  # 左边界
-                if pygame.sprite.collide_rect(rkt, bball):  # sprite自带的碰撞检测
+            if bball.rect.x < (0.7 * rkt.rkwh):  # 左边界
+
+                if pygame.sprite.collide_mask(bball, rkt):  # 像素遮罩（碰撞）检测
                     score = score + 1
                     bball.speedx = -bball.speedx
                     if isload:  # 避免音频未正确加载导致的程序异常结束
@@ -121,6 +124,9 @@ def main():
             trest = ft.render("Press SPACE to start again", True, CFONT)
             screen.blit(tover, (150, 200))
             screen.blit(trest, (220, 400))
+        if ispause and isfont and (not isfail):
+            pause = ft.render("Press SPACE to continue", True, CFONT)
+            screen.blit(pause, (250, 300))
         if isfont:
             text = ft.render("Score: " + str(score), True, CFONT)
             screen.blit(text, (100, 0))

@@ -3,14 +3,14 @@
 # 使用方法
 两种方法，自己选择其中一种即可
 ## 方法一：下载编译好的程序
-见Releases,或者百度网盘
+win 或 linux见Releases,或者百度网盘
 - [v0.0.0   提取码：64tb](https://pan.baidu.com/s/1gXiZ7HI2S1RdpVGpFuLWZg)
 
 ## 方法二：自行编译
 ### 准备环境
 1. 安装python3 - 略
 2. 安装pygame模块 - `pip3 install pygame`
-3. (非必须，可跳过, 只是没声音而已)下载音频文件，自行查找乒乓球击球音效、开场音效、失败音效、背景音效，然后转换为ogg格式或者wvb格式，然后修改代码中的几个音频路径`MUSICPATH`，找不到这里有一份压缩好的[音频素材包（ 提取码: nadg）](https://pan.baidu.com/s/10R6ryFxi_YD-UpVQpiHsiQ)
+3. (非必须，可跳过, 只是没声音、图片而已)下载音频和图片压缩包，解压放到代码相同目录下，[百度网盘 提取码: q6cw](https://pan.baidu.com/s/12QXF2530ymr_sdXAa-e43g)
 ### 开始玩耍
 1. 下载代码
 2. `python3 pong.py`, 开始游戏之后，按键盘W/S按键控制球拍上下移动，接住球即可继续游戏，没接住的话游戏结束。结束后按空格可以重新开始游戏
@@ -46,3 +46,4 @@ Sprite为我们提供了一个装载游戏对象的类，比如这里面的球�
 - [assert](https://www.runoob.com/python3/python3-assert.html)
 - [logging](https://www.jianshu.com/p/feb86c06c4f4)
 - [pygame.update()与pygame.flip()的区别](https://www.cnblogs.com/hiuhungwan/p/11180900.html)
+- [Icofont-阿里巴巴](https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a)
