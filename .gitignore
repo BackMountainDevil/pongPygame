@@ -127,5 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-# music file
+# music and image file
 *.ogg
+img/
+music/
