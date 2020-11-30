@@ -47,3 +47,4 @@ Sprite为我们提供了一个装载游戏对象的类，比如这里面的球�
 - [logging](https://www.jianshu.com/p/feb86c06c4f4)
 - [pygame.update()与pygame.flip()的区别](https://www.cnblogs.com/hiuhungwan/p/11180900.html)
 - [Icofont-阿里巴巴](https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a)
+- [pygame库写游戏——入门<8>——动画和帧率](https://blog.csdn.net/weixin_40497712/article/details/78763922)

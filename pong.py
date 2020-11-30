@@ -22,7 +22,7 @@ MBAK = "music/maliaorun.ogg"  # 背景音乐音频
 
 WIDTH = 808
 HEIGHT = 640
-
+FPS = 30
 CBACK = (153, 255, 0)
 CBALL = (245, 245, 220)
 CRKT = (200, 0, 0)
@@ -40,10 +40,11 @@ def main():
     pygame.display.set_caption('Pong Pygame program')
     clock = pygame.time.Clock()
 
-    bball = ball(CBALL, 20, (WIDTH, HEIGHT), (7, 5), "img/ball.png")
+    bball = ball(CBALL, 20, (WIDTH, HEIGHT), (280 / FPS, 180 / FPS),
+                 "img/ball.png")
     bball.rect.x = 490
     bball.rect.y = 80
-    rkt = racket(CRKT, (10, 100), "img/pingpongbat.png")
+    rkt = racket(CRKT, (10, 100), 220 / FPS, "img/pingpongbat.png")
     rkt.rect.x = 0
     rkt.rect.y = 100
 
@@ -65,7 +66,7 @@ def main():
     except Exception as m:
         print("温馨提示： ", m, "， 请正确配置音频文件")
     if isload:  # 载入失败不会推出，后面不会有音乐罢了
-        pygame.mixer.music.play(-1)     # 循环播放
+        pygame.mixer.music.play(-1)  # 循环播放
         mbegin.play()
 
         # 找不到calibri字体就会使用pygame默认字体，都不支持中文
@@ -88,7 +89,7 @@ def main():
                 ispause = not ispause
                 if isfail:
                     isfail = False  # 重新开始，重置数据
-                    bball.reset()
+                    bball.reset((280 / FPS, 180 / FPS))
                     rkt.reset()
                     score = 0
                     if isload:
@@ -128,7 +129,7 @@ def main():
             text = ft.render("Score: " + str(score), True, CFONT)
             screen.blit(text, (100, 0))
         all_list.draw(screen)  # 绘制所有的sprite对象
-        clock.tick(30)  # 以每秒30帧的速率进行绘制
+        clock.tick(FPS)  # 以每秒30帧的速率进行绘制
         pygame.display.update()
 
 
